@@ -53,7 +53,7 @@ def dynamic_GD_optimizer(cost_function, x, iters_max = 10_000, lr_ini = 1e-8):
            x.data  +=  x_old
    return x
 
-# ------------------------------ Test Case ------------------------------
+# ------------------------------ Test Case (Rosenbrock function) ------------------------------
 
 if __name__ == '__main__':
    def cost_function(xy, a=1, b=100):
