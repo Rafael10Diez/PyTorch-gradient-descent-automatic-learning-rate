@@ -1,25 +1,3 @@
-
-# ------------------------------ Tic-Toc profiler ------------------------------
-
-from time import time
-
-class TicToc:
-   def __init__(self):
-       self.A      = []
-       self.output = []
-       self.t_ref  = time()
-   def tic(self, label=None):
-       t              = time()-self.t_ref
-       self.A.append([t,label])
-       self.output.append(['tic:', label, t])
-   def toc(self, label=None):
-       t              = time()-self.t_ref
-       t0,label_check = self.A.pop()
-       assert label == label_check
-       self.output.append(['toc:', label, t-t0])
-   def print(self):
-       for row in self.output: print(*row)
-  
 # ------------------------------ Optimizer ------------------------------
 
 import torch 
@@ -52,6 +30,27 @@ def dynamic_GD_optimizer(cost_function, x, iters_max = 10_000, lr_ini = 1e-8, lr
            x.data  *=  0.
            x.data  +=  x_old
    return x
+
+# ------------------------------ Tic-Toc profiler ------------------------------
+
+from time import time
+
+class TicToc:
+   def __init__(self):
+       self.A      = []
+       self.output = []
+       self.t_ref  = time()
+   def tic(self, label=None):
+       t              = time()-self.t_ref
+       self.A.append([t,label])
+       self.output.append(['tic:', label, t])
+   def toc(self, label=None):
+       t              = time()-self.t_ref
+       t0,label_check = self.A.pop()
+       assert label == label_check
+       self.output.append(['toc:', label, t-t0])
+   def print(self):
+       for row in self.output: print(*row)
 
 # ------------------------------ Test Case (Rosenbrock function) ------------------------------
 
