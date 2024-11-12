@@ -24,7 +24,7 @@ class TicToc:
 
 import torch 
 
-def dynamic_GD_optimizer(cost_function, x, iters_max = 10_000, lr_ini = 1e-8):
+def dynamic_GD_optimizer(cost_function, x, iters_max = 10_000, lr_ini = 1e-8, lr_stop=1e-12, lr_gain=1.5, lr_loss=0.5):
    
    cost_function(x).backward()
    
@@ -32,7 +32,7 @@ def dynamic_GD_optimizer(cost_function, x, iters_max = 10_000, lr_ini = 1e-8):
    lr    = lr_ini + 0. # will grow exponentially
    iters = 0
    
-   while (lr > 1e-12):
+   while (lr > lr_stop):
        if iters > iters_max:
            print('WARNING: iteration limit exceeded')
            break
@@ -44,11 +44,11 @@ def dynamic_GD_optimizer(cost_function, x, iters_max = 10_000, lr_ini = 1e-8):
        Jcost_now = float(cost_function(x))
    
        if Jcost_now < Jcost_old:
-           lr        *=  1.5
+           lr        *=  lr_gain
            x_old      =  x.data + 0. # triggers copy
            Jcost_old  =  Jcost_now
        else:
-           lr      *=  0.5
+           lr      *=  lr_loss
            x.data  *=  0.
            x.data  +=  x_old
    return x
